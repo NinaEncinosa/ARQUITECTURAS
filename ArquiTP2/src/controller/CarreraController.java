@@ -67,7 +67,8 @@ public class CarreraController implements Serializable {
 		Query query = em
 				.createNativeQuery("SELECT c.id_carrera, c.nombre_carrera ,extract(year from m.fecha_inscripcion) as fechaInscripcion, count(m.id_carrera) as CantInscriptos\n" + 
 						"FROM Carrera c JOIN Matricula m ON (c.id_carrera = m.id_carrera)\n" + 
-						"GROUP BY m.id_carrera, extract(YEAR FROM m.fecha_inscripcion)");
+						"GROUP BY m.id_carrera, extract(YEAR FROM m.fecha_inscripcion) " +
+						"ORDER BY c.nombre_carrera,extract(YEAR FROM m.fecha_inscripcion)");
 		List<Object[]> join = query.getResultList();
 		return join.stream().map(o -> new ReporteInscriptosCarrerasPorAnio((Integer)o[0], (String)o[1], (Integer)o[2], (BigInteger)o[3])).collect(Collectors.toList());
 	}
@@ -77,7 +78,8 @@ public class CarreraController implements Serializable {
 		Query query = em
 				.createNativeQuery("SELECT c.id_carrera, c.nombre_carrera ,extract(year from m.fecha_graduacion) as fechaGraduacion , SUM(m.finalizo) as cantGraduados\n" + 
 						"FROM Carrera c JOIN Matricula m ON (c.id_carrera = m.id_carrera)\n" + 
-						"GROUP BY m.id_carrera,extract(YEAR FROM m.fecha_graduacion)");
+						"GROUP BY m.id_carrera,extract(YEAR FROM m.fecha_graduacion) "+
+						"ORDER BY c.nombre_carrera,extract(YEAR FROM m.fecha_graduacion)");
 		List<Object[]> join = query.getResultList();
 		return join.stream().map(o -> new ReporteGraduadosCarrerasPorAnio((Integer)o[0], (String)o[1], (Integer)o[2], (BigDecimal)o[3])).collect(Collectors.toList());
 	}

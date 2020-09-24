@@ -85,21 +85,21 @@ public class Select {
 		System.out.println("3) Generar un reporte de las carreras, que para cada carrera incluya información de los\r\n" + 
 				" inscriptos y egresados por año. Se deben ordenar las carreras alfabéticamente, y presentar\r\n" + 
 				" los años de manera cronológica");
-		CarreraController c1 = new CarreraController();
-		
-		System.out.println("");
-		System.out.println("Carreras ordenadas alfabeticamente y por anio, traer su cantidad de graduados");
-		List<ReporteGraduadosCarrerasPorAnio> lista= c1.getGraduadosPorCarrera();
-		for (ReporteGraduadosCarrerasPorAnio object : lista) {
-			System.out.println(object);
-		}
-		
-		System.out.println("");
-		System.out.println("Carreras ordenadas alfabeticamente y por anio, traer su cantidad de inscriptos");
-		List<ReporteInscriptosCarrerasPorAnio> lista2= c1.getInscriptosPorCarrera();
-		for (ReporteInscriptosCarrerasPorAnio object : lista2) {
-			System.out.println(object);
-		}
+//		CarreraController c1 = new CarreraController();
+//		
+//		System.out.println("");
+//		System.out.println("Carreras ordenadas alfabeticamente y por anio, traer su cantidad de graduados");
+//		List<ReporteGraduadosCarrerasPorAnio> lista= c1.getGraduadosPorCarrera();
+//		for (ReporteGraduadosCarrerasPorAnio object : lista) {
+//			System.out.println(object);
+//		}
+//		
+//		System.out.println("");
+//		System.out.println("Carreras ordenadas alfabeticamente y por anio, traer su cantidad de inscriptos");
+//		List<ReporteInscriptosCarrerasPorAnio> lista2= c1.getInscriptosPorCarrera();
+//		for (ReporteInscriptosCarrerasPorAnio object : lista2) {
+//			System.out.println(object);
+//		}
 		
 	}
 }
