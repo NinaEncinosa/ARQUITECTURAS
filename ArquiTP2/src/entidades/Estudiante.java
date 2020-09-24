@@ -7,6 +7,10 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
+
+
 @Entity
 public class Estudiante {
 	
@@ -129,14 +133,12 @@ public class Estudiante {
 	public void addCarrera(Matricula carrera) {
 		this.carreras.add(carrera);
 	}
-	
-
 
 	@Override
 	public String toString() {
 		return "Estudiante [legajo=" + legajo + ", nombre=" + nombre + ", apellido=" + apellido + ", edad=" + edad
-				+ ", genero=" + genero + ", dni=" + dni + ", ciudad_residencia=" + ciudad_residencia + ", carreras="
-				+ carreras + "]";
+				+ ", genero=" + genero + ", dni=" + dni + ", ciudad_residencia=" + ciudad_residencia+"]";
 	}
+
 
 }

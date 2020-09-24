@@ -10,21 +10,17 @@
 		<class>entidades.Carrera</class>
 		<class>entidades.Matricula</class>
 		<properties>
-			
-			<!-- Propiedades de configuracion de JDBC para MySQL -->
-		<!--  	<property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver" />
-			<property name="javax.persistence.jdbc.url" value="jdbc:derby:MyDerbyDb;create=true" /> -->
-			
+				<!--  Propiedades de configuracion de JDBC para MySQL	-->		
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
-			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/exampleDB" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/exampledb" />
 			<property name="javax.persistence.jdbc.user" value="root" />
 			<property name="javax.persistence.jdbc.password" value="" />
 			
 			<!-- Propiedad para la generacion automatica del esquema de base de datos -->
 			<property name="hibernate.hbm2ddl.auto" value="update" />
-			<!--<property name="hibernate.dialect" value="org.hibernate.dialect.DerbyDialect"/>-->
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect"/>
-			<property name="show_sql" value="true"/>
+			<property name="show_sql" value="true"/>  
+			
 		</properties>
 	</persistence-unit>
 

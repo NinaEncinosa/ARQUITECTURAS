@@ -16,7 +16,7 @@ public class Carrera {
 	@Column(nullable = false)
 	private String nombre_carrera;
 
-	@OneToMany(mappedBy = "carrera")
+@OneToMany(mappedBy = "carrera")
 	private List<Matricula> estudiantes;
 
 	public Carrera(int id_carrera, String nombre_carrera, List<Matricula> estudiantes) {
@@ -63,8 +63,7 @@ public class Carrera {
 
 	@Override
 	public String toString() {
-		return "Carrera [id_carrera=" + id_carrera + ", nombre_carrera=" + nombre_carrera + ", estudiantes="
-				+ estudiantes + "]";
+		return "Carrera [id_carrera=" + id_carrera + ", nombre_carrera=" + nombre_carrera +  "]";
 	}
 
 }

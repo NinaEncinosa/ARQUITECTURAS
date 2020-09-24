@@ -1,14 +1,26 @@
 package controller;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import entidades.Carrera;
+import javax.persistence.Query;
 
-public class CarreraController  implements Serializable{
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
+
+import entidades.Carrera;
+import entidades.Matricula;
+import entidades.ReporteGraduadosCarrerasPorAnio;
+import entidades.ReporteInscriptosCarrerasPorAnio;
+
+public class CarreraController implements Serializable {
 
 	private static final long serialVersionUID = 902997133635722325L;
 	private EntityManagerFactory emf = null;
@@ -33,16 +45,57 @@ public class CarreraController  implements Serializable{
 		}
 	}
 
+	public List<Carrera> getCarreras() {
+		EntityManager em = emf.createEntityManager();
+		Query query = em
+				.createNativeQuery("SELECT * FROM Carrera C", Carrera.class);
+		 List<Carrera> listado = query.getResultList();
+		return listado;
+	}
+	
 	public Carrera getCarreraID(int id_carrera) {
 		EntityManager em = emf.createEntityManager();
 		List<Carrera> listado = em
 				.createQuery("SELECT C FROM Carrera C WHERE C.id_carrera =:id_carrera ", Carrera.class)
 				.setParameter("id_carrera", id_carrera).getResultList();
-		if (listado.size() == 0) {// no hay carrera con ese id
-			return null;
-		} else {
-			return listado.get(0);
+		return listado.get(0);
+	}
+	
+
+	public List<ReporteInscriptosCarrerasPorAnio> getInscriptosPorCarrera() {
+		EntityManager em = emf.createEntityManager();
+		Query query = em
+				.createNativeQuery("SELECT c.id_carrera, c.nombre_carrera ,extract(year from m.fecha_inscripcion) as fechaInscripcion, count(m.id_carrera) as CantInscriptos\n" + 
+						"FROM Carrera c JOIN Matricula m ON (c.id_carrera = m.id_carrera)\n" + 
+						"GROUP BY m.id_carrera, extract(YEAR FROM m.fecha_inscripcion)");
+		List<Object[]> join = query.getResultList();
+		return join.stream().map(o -> new ReporteInscriptosCarrerasPorAnio((Integer)o[0], (String)o[1], (Integer)o[2], (BigInteger)o[3])).collect(Collectors.toList());
+	}
+	
+	public List<ReporteGraduadosCarrerasPorAnio> getGraduadosPorCarrera() {
+		EntityManager em = emf.createEntityManager();
+		Query query = em
+				.createNativeQuery("SELECT c.id_carrera, c.nombre_carrera ,extract(year from m.fecha_graduacion) as fechaGraduacion , SUM(m.finalizo) as cantGraduados\n" + 
+						"FROM Carrera c JOIN Matricula m ON (c.id_carrera = m.id_carrera)\n" + 
+						"GROUP BY m.id_carrera,extract(YEAR FROM m.fecha_graduacion)");
+		List<Object[]> join = query.getResultList();
+		return join.stream().map(o -> new ReporteGraduadosCarrerasPorAnio((Integer)o[0], (String)o[1], (Integer)o[2], (BigDecimal)o[3])).collect(Collectors.toList());
+	}
+	
+	public List<Carrera> getCarrerasPorInscriptos() {
+		EntityManager em = emf.createEntityManager();
+		Query query = em
+				.createNativeQuery("SELECT m.id_carrera, c.nombre_carrera FROM Carrera c JOIN Matricula m ON c.id_carrera=m.id_carrera GROUP BY m.id_carrera, c.nombre_carrera ORDER BY count(m.id_carrera) DESC", Carrera.class);
+		List<Carrera> listado = query.getResultList();
+		return listado;
+	}
+	//CSV
+
+	public void agregarCarreras(CSVParser c) {
+		for(CSVRecord row: c) {
+			this.insert(new Carrera(Integer.parseInt(row.get("id_carrera")), row.get("nombre_carrera")));
 		}
 	}
+
 
 }
